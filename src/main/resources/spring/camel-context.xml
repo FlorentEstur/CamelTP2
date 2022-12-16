@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       https://camel.apache.org/schema/spring/camel-spring-2.23.3.xsd">
+    <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+        <route id="_route1">
+            <from id="_from1" uri="file:C:/inputFolder?noop=true"/>
+            <log id="_log1" message="recuperation des fichiers"/>
+            <choice id="_choice1">
+                <when id="_when1">
+                    <xpath>//prix[contains (@maj,'2018')]</xpath>
+                    <log id="_log2" message="test 2018"/>
+                    <to id="_to1" uri="file:C:/2018"/>
+                </when>
+                <when id="_when2">
+                    <xpath>//prix[contains (@maj,'2019')]</xpath>
+                    <log id="_log3" message="test 2019"/>
+                    <to id="_to2" uri="file:C:/2019"/>
+                </when>
+                <when id="_when3">
+                    <xpath>//prix[contains (@maj,'2020')]</xpath>
+                    <log id="_log4" message="test 2020"/>
+                    <to id="_to3" uri="file:C:/2020"/>
+                </when>
+                <when id="_when4">
+                    <xpath>//prix[contains (@maj,'2021')]</xpath>
+                    <log id="_log5" message="test 2021"/>
+                    <to id="_to4" uri="file:C:/2021"/>
+                </when>
+                <otherwise id="_otherwise1">
+                    <log id="_log6" message="test 2022"/>
+                    <to id="_to5" uri="file:C:/2022"/>
+                </otherwise>
+            </choice>
+        </route>
+        <route id="_route2">
+            <from id="_to10" uri="file:C:/2018"/>
+            <choice id="_choice2">
+                <when id="_when6">
+                    <xpath>//ville[contains text(),'Paris']</xpath>
+                    <to id="_to6" uri="file:C:/Paris"/>
+                </when>
+                <otherwise id="_otherwise2">
+                    <to id="_to9" uri="file:C:Autres"/>
+                </otherwise>
+            </choice>
+        </route>
+    </camelContext>
+</beans>
